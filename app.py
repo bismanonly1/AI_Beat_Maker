@@ -16,9 +16,8 @@ def generate_beat(genre, duration):
     prompt = f"a {genre} beat"
     inputs = processor(text=[prompt], padding = True, return_tensors = "pt")
     audio_values = model.generate(**inputs, max_new_tokens = duration * 50)
-    audio = processor.audio_to_waveform(audio[0], sampling_rate = 16000)
     output_path = f"generated/{genre}_{duration}s.wav"
-    torchaudio.save(output_path, audio, 16000)
+    torchaudio.save(output_path, audio_values, 16000)
     return output_path
 
 @app.post("/generate")
